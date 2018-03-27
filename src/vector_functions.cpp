@@ -73,6 +73,20 @@ double operator * (vector A, vector B)
 	return ans;
 }
 
+matrix operator * (matrix A, matrix B)
+{
+	int n = A.size(), m = B.size(), t = B[0].size();
+	matrix C(n, vector(t));
+	for (int i = 0; i < n; i++){
+		for (int j = 0; j < t; j++) {
+			C[i][j] = 0;
+			for (int k = 0; k < m; k++)
+				C[i][j] += A[i][k]*B[k][j];
+		}
+	}
+	return C;
+}
+
 matrix t(matrix A) {
 	int n = A.size(), m = A[0].size();
 	matrix B(m, vector(n));
