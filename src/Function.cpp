@@ -95,7 +95,7 @@ public:
     }
 
     double ddphi(double x) {
-        return -rho*phi(x)*dphi(x);
+        return -2*rho*phi(x)*dphi(x);
     }
 
     void precalculations(vector w) {
@@ -136,11 +136,10 @@ public:
         matrix A(2, vector(2));
         int i2 = 0, j2 = 0;
         for (int i1 = 0; i1 < N; i1++) {
-            if (i1 == i)
-                continue;
+            j2 = 0;
+            if (i1 == i) continue;
             for (int j1 = 0; j1 < N; j1++){
-                if (j1 == j)
-                    continue;
+                if (j1 == j) continue;
                 A[i2][j2] = M[i1][j1];
                 j2++;
             }
@@ -149,7 +148,7 @@ public:
         return A[0][0]*A[1][1]-A[1][0]*A[0][1];
     }
 
-    virtual matrix inverse(matrix M) {
+    virtual matrix inverse(matrix &M) {
         matrix X = matrix(N, vector(N));
         double det =    M[0][0]*(M[1][1]*M[2][2] - M[1][2]*M[2][1])
                       - M[0][1]*(M[1][0]*M[2][2] - M[1][2]*M[2][0])
@@ -160,19 +159,6 @@ public:
             for (int j = 0; j < N; j++){
                 X[i][j] = det_adj(i, j, Mt)*(((i+j)&1) ? -1 : 1);
                 X[i][j] /= det;
-            }
-        }
-        matrix I = X*M;
-        for (int i = 0; i < N; i++){
-            for (int j = 0; j < N; j++){
-                if(i!=j && abs(I[i][j]) > 1e-9){
-                    std::cout << "error" << std::endl;
-                    exit(1);
-                }
-                if (i==j && abs(I[i][j]-1) > 1e-9){
-                    std::cout << "error" << std::endl;
-                    exit(1);
-                }
             }
         }
         return X;

@@ -6,9 +6,12 @@ OPT = -Wall -O3 -Wno-unused-function -Wno-unused-variable
 cauchy: src/cauchy.cpp
 	$(CXX) $(C11) $< -o $@
 
+newton: src/newton.cpp
+	$(CXX) $(C11) $< -o $@
+
 .PHONY: clean
 clean:
-	rm -fr cauchy generador
+	rm -fr cauchy newton generador
 
 cleanData:
 	rm -fr line.txt c1.txt c2.txt
