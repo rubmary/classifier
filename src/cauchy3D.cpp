@@ -54,25 +54,32 @@ void make_graphics(vector w, matrix X, vector D){
 	std::ofstream plane("plane.txt"), c1("c1.txt"), c2("c2.txt");
 	int N = X.size();
 	
-	double minX = 1e100, maxX = -1e100, minY = 1e100, maxY = 1e-100;
+	double minX = 1e100, maxX = -1e100, minY = 1e100, maxY = 1e-100, minZ = 1e100, maxZ = 1e-100;
 
 	for (int i = 0; i < N; i++){
 		minX = std::min(minX, X[i][1]);
 		maxX = std::max(maxX, X[i][1]);
 		minY = std::min(minY, X[i][2]);
 		maxY = std::max(maxY, X[i][2]);
+		minZ = std::min(minZ, X[i][3]);
+		maxZ = std::max(maxZ, X[i][3]);
 	}
+
 	minX -= 0.1;
 	minY -= 0.1;
+	minZ -= 0.1;
 	maxX += 0.1;
 	maxY += 0.1;
-	int total = 30;
+	maxZ += 0.1;
+
+	int total = 50;
 	for (int i = 1; i <= total; i++) {
 		for (int j = 1; j <= total; j++) {
 			double x0 = i*(maxX - minX)/total + minX;
 			double y0 = j*(maxY - minY)/total + minY;
 			double z0 = -(D1 + A*x0 + B*y0)/C;
-			plane << x0 << ' ' << y0 << ' ' << z0 << std::endl;
+			if (minZ <= z0 && z0 <=maxZ)
+				plane << x0 << ' ' << y0 << ' ' << z0 << std::endl;
 		}
 	}
 
@@ -81,7 +88,8 @@ void make_graphics(vector w, matrix X, vector D){
 			double x0 = i*(maxX - minX)/total + minX;
 			double y0 = j*(maxY - minY)/total + minY;
 			double z0 = -(D1 + A*x0 + B*y0)/C;
-			plane << x0 << ' ' << y0 << ' ' << z0 << std::endl;
+			if (minZ <= z0 && z0 <=maxZ)
+				plane << x0 << ' ' << y0 << ' ' << z0 << std::endl;
 		}
 	}
 
