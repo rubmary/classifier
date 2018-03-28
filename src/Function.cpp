@@ -107,6 +107,7 @@ public:
     }
 
     virtual double val(vector w) {
+        total++;
         precalculations(w);
         double e = 0;
         for (int k = 0; k< M; k++)
@@ -115,11 +116,13 @@ public:
     }
     
     virtual vector d(vector w) {
+        total_d++;
         matrix Xt = t(X);
         return Xt*PHI;
     }
 
     virtual matrix h(vector w) {
+        total_h++;
         matrix H(N, vector(N));
         for (int i = 0; i < N; i++) {
             for (int j = i; j < N; j++){
@@ -149,6 +152,7 @@ public:
     }
 
     virtual matrix inverse(matrix &M) {
+        total_i++;
         matrix X = matrix(N, vector(N));
         double det =    M[0][0]*(M[1][1]*M[2][2] - M[1][2]*M[2][1])
                       - M[0][1]*(M[1][0]*M[2][2] - M[1][2]*M[2][0])

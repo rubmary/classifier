@@ -4,49 +4,92 @@
 #include <ctime>
 #include <climits>
 #include <cstdlib>
+#include <algorithm>
 #define EPS 1e-3
 
-
+int N;
 void make_data(matrix &X, vector &D){
-	vector x(3, 1);
+	vector x(4, 1);
 	int M;
 	std::cin >> M;
 	D = vector(M);
 	for (int i = 0; i < M; i++) {
-		std::cin >> x[1] >> x[2] >> D[i];
+		std::cin >> x[1] >> x[2] >> x[3];
+		std::cin >> D[i];
 		X.push_back(x);
 	}
 
-	double miuX = 0, varX = 0, miuY = 0, varY = 0;
+	double miuX = 0, varX = 0;
+	double miuY = 0, varY = 0;
+	double miuZ = 0, varZ = 0;
+
 	for (int i = 0; i < M; i++) {
 		miuX += X[i][1];
 		miuY += X[i][2];
+		miuZ += X[i][3];
 	}
 	miuX /= M;
 	miuY /= M;
+	miuZ /=M;
+
 	for (int i = 0; i < M; i++) {
 		varX += sq(X[i][1] - miuX);
 		varY += sq(X[i][2] - miuY);
+		varZ += sq(X[i][3] - miuZ);
 	}
+
 	varX /= (M-1);
 	varY /= (M-1);
+	varZ /= (M-1);
+
 	for (int i = 0; i < M; i++) {
 		X[i][1] = (X[i][1] - miuX)/varX;
 		X[i][2] = (X[i][2] - miuY)/varY;
+		X[i][3] = (X[i][3] - miuZ)/varZ;
 	}
 }
 
 void make_graphics(vector w, matrix X, vector D){
-	double C = w[0], B = w[2], A = w[1];
-	std::ofstream line("line.txt"), c1("c1.txt"), c2("c2.txt");
+	double D1 = w[0], A = w[1], B = w[2], C = w[3];
+	std::ofstream plane("plane.txt"), c1("c1.txt"), c2("c2.txt");
 	int N = X.size();
-	for (int i = 0; i < N; i++)
-		line << X[i][1] << ' ' << -(C + A*X[i][1])/B << std::endl;
+	
+	double minX = 1e100, maxX = -1e100, minY = 1e100, maxY = 1e-100;
+
+	for (int i = 0; i < N; i++){
+		minX = std::min(minX, X[i][1]);
+		maxX = std::max(maxX, X[i][1]);
+		minY = std::min(minY, X[i][2]);
+		maxY = std::max(maxY, X[i][2]);
+	}
+	minX -= 0.1;
+	minY -= 0.1;
+	maxX += 0.1;
+	maxY += 0.1;
+	int total = 30;
+	for (int i = 1; i <= total; i++) {
+		for (int j = 1; j <= total; j++) {
+			double x0 = i*(maxX - minX)/total + minX;
+			double y0 = j*(maxY - minY)/total + minY;
+			double z0 = -(D1 + A*x0 + B*y0)/C;
+			plane << x0 << ' ' << y0 << ' ' << z0 << std::endl;
+		}
+	}
+
+	for (int j = 1; j <= total; j++) {
+		for (int i = 1; i <= total; i++) {
+			double x0 = i*(maxX - minX)/total + minX;
+			double y0 = j*(maxY - minY)/total + minY;
+			double z0 = -(D1 + A*x0 + B*y0)/C;
+			plane << x0 << ' ' << y0 << ' ' << z0 << std::endl;
+		}
+	}
+
 	for (int i = 0; i < N; i++) {
 		if(D[i] == 1)
-			c1 << X[i][1] << ' ' << X[i][2] << std::endl;
+			c1 << X[i][1] << ' ' << X[i][2] << ' ' << X[i][3] << std::endl;
 		else
-			c2 << X[i][1] << ' ' << X[i][2] << std::endl;
+			c2 << X[i][1] << ' ' << X[i][2] << ' ' << X[i][3] << std::endl;
 	}
 }
 
@@ -62,7 +105,6 @@ std::vector <int> results(vector w, matrix X, vector D) {
 	}
 	return std::vector<int>({correct, wrong});
 }
-
 double get_rand(double a, double b){
 	double r = (double) std::rand()/INT_MAX;
 	return r*(b - a) - a;
@@ -73,8 +115,9 @@ int main() {
 	vector D;
 	make_data(X, D);
 
-	ET *f = new ET(3, X, D, 0.5);
-	vector  w0(3, 2);
+	ET *f = new ET(4, X, D, 0.5);
+	vector  w0(4, 2);
+	
 	srand(time(NULL));
 	for (int i = 0; i < w0.size(); i++)
 		w0[i] = get_rand(-1, 1);
