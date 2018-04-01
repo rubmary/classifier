@@ -18,18 +18,26 @@ int main() {
 	D = get_rand(-3, 3);
 
 	int N;
+	double distance;
 	cin >> N;
 	cout << N << endl;
-	for (int i = 0; i < N; i++) {
+
+	int i = 0;
+	while (i < N) {
 		double X, Y, Z;
 		X = get_rand(-10, 10);
 		Y = get_rand(-10, 10);
 		Z = get_rand(-10, 10);
 		cout << X << ' ' << Y << ' ' << Z << ' ';
+
+		if (abs(A*X + B*Y + C*Z + D) < distance)
+			continue;
+
 		if (A*X + B*Y + C*Z + D > 0)
 			cout <<  1;
 		else
 			cout << -1;
 		cout << endl;
+		i++;
 	}
 }

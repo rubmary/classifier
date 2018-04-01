@@ -16,17 +16,24 @@ int main() {
 	B = get_rand(-3, 3);
 	C = get_rand(-3, 3);
 	int N;
+	double distance;
+
 	cin >> N;
 	cout << N << endl;
-	for (int i = 0; i < N; i++) {
+	int i = 0;
+	while(i < N) {
 		double X, Y;
 		X = get_rand(-10, 10);
 		Y = get_rand(-10, 10);
+
+		if (abs(A*X + B*Y + C) < distace)
+			continue;
 		cout << X << ' ' << Y << ' ';
 		if (A*X + B*Y + C > 0)
 			cout << 1;
 		else
 			cout << -1;
 		cout << endl;
+		i++;
 	}
 }
