@@ -17,9 +17,9 @@ int main() {
 	B = get_rand(-3, 3);
 	C = get_rand(-3, 3);
 	int N;
-	double distance;
+	double distance, error;
 
-	cin >> N >> distance;
+	cin >> N >> distance >> error;
 	cout << N << endl;
 	int i = 0;
 	while(i < N) {
@@ -29,7 +29,7 @@ int main() {
 
 		if (abs(A*X + B*Y + C) < distance)
 			continue;
-		cout << X << ' ' << Y << ' ';
+		cout << X + get_rand(-error/2, error/2) << ' ' << Y + get_rand(-error/2, error/2) << ' ';
 		if (A*X + B*Y + C > 0)
 			cout << 1;
 		else
