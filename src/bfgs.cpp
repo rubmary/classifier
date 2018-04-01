@@ -4,6 +4,7 @@
 #include <ctime>
 #include <climits>
 #include <cstdlib>
+#include <algorithm>
 #define EPS 1e-3
 
 
@@ -40,8 +41,38 @@ void make_graphics(vector w, matrix X, vector D){
 	double C = w[0], B = w[2], A = w[1];
 	std::ofstream line("line.txt"), c1("c1.txt"), c2("c2.txt");
 	int N = X.size();
-	for (int i = 0; i < N; i++)
-		line << X[i][1] << ' ' << -(C + A*X[i][1])/B << std::endl;
+	double minY = 1e100, maxY = 1e-100, minX = 1e100, maxX = 1e-100;
+
+	for (int i = 0; i < N; i++){
+		minX = std::min(minX, X[i][1]);
+		maxX = std::max(maxX, X[i][1]);
+		minY = std::min(minY, X[i][2]);
+		maxY = std::max(maxY, X[i][2]);
+	}
+
+	minX -= 0.05;
+	maxY += 0.05;
+	minY -= 0.05;
+	maxY += 0.05;
+
+	if (std::abs(A) > EPS){
+		B /= A;
+		C /= A;
+		A = 1;
+	}
+
+	if (std::abs(B) < EPS) {
+		line << -C/A << ' ' << minY << std::endl;
+		line << -C/A << ' ' << maxY << std::endl;
+	}else {
+		int total = 10000;
+		for (int i = 0; i < total; i++){
+			double x0 = i*(maxX - minX)/total + minX, y0 = -(C + x0)/B;
+			if (minY <= y0 && y0 <= maxY)
+				line << x0 << ' ' << y0 << std::endl;
+		}
+	}
+
 	for (int i = 0; i < N; i++) {
 		if(D[i] == 1)
 			c1 << X[i][1] << ' ' << X[i][2] << std::endl;
@@ -116,7 +147,7 @@ int main() {
 	std::cout << "\tDerivadas: " << f -> total_d << std::endl;
 	std::cout << "\tHessiano:  " << f -> total_h << std::endl;
 	std::cout << "\tInversa:   " << f -> total_i << std::endl;
-	std::cout << "Norma del gradiente:  " << abs(bfgs -> gx) << std::endl;
+	std::cout << "Norma del gradiente:  " << std::abs(bfgs -> gx) << std::endl;
 	std::cout << "Total de iteraciones: " << k << std::endl;
 	std::cout << "Resultados: " << std::endl;
 	std::cout << "\tDatos bien clasificados: " << r[0] << std::endl;

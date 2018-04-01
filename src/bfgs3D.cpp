@@ -124,15 +124,12 @@ int main() {
 	make_data(X, D);
 
 	ET *f = new ET(4, X, D, 0.5);
-	vector  w0(4, 2);
-	
+	vector  w0(4, 0);
 	srand(time(NULL));
-	for (int i = 0; i < w0.size(); i++)
-		w0[i] = get_rand(-1, 1);
 	
 	int k;
 	clock_t t1, t2;
-	double ro = 0.3;
+	double ro = 0.5;
 
 	I=identity(4);
 

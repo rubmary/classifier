@@ -2,6 +2,7 @@
 #include <climits>
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
 using namespace std;
 
 double get_rand(double a, double b){
@@ -19,7 +20,7 @@ int main() {
 
 	int N;
 	double distance;
-	cin >> N;
+	cin >> N >> distance;
 	cout << N << endl;
 
 	int i = 0;
@@ -28,11 +29,11 @@ int main() {
 		X = get_rand(-10, 10);
 		Y = get_rand(-10, 10);
 		Z = get_rand(-10, 10);
-		cout << X << ' ' << Y << ' ' << Z << ' ';
-
+	
 		if (abs(A*X + B*Y + C*Z + D) < distance)
 			continue;
 
+		cout << X << ' ' << Y << ' ' << Z << ' ';
 		if (A*X + B*Y + C*Z + D > 0)
 			cout <<  1;
 		else

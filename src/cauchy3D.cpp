@@ -124,15 +124,13 @@ int main() {
 	make_data(X, D);
 
 	ET *f = new ET(4, X, D, 0.5);
-	vector  w0(4, 2);
+	vector  w0(4, 0);
 	
 	srand(time(NULL));
-	for (int i = 0; i < w0.size(); i++)
-		w0[i] = get_rand(-1, 1);
 	
 	int k;
 	clock_t t1, t2;
-	double ro = 0.3;
+	double ro = 0.5;
 	Cauchy *cauchy = new Cauchy(10, 1e-4, ro);
 	cauchy -> eps = EPS;
 	cauchy -> MAX_IT = 100000;
@@ -144,8 +142,8 @@ int main() {
 
 	vector w = cauchy -> x;
 	std::vector<int> r = results(w, X, D);
-	make_graphics(w, X, D);
 
+	make_graphics(w, X, D);
 	std::cout << "Valor de rho: " << ro << std::endl;
 	std::cout << "Total de llamadas a: "<< std::endl;
 	std::cout << "\tFuncion:   " << f -> total << std::endl;

@@ -9,7 +9,10 @@ cauchy: src/cauchy.cpp
 cauchy3D: src/cauchy3D.cpp
 	$(CXX) $(C11) $< -o $@
 
-newton: src/newton.cpp
+bfgs: src/bfgs.cpp
+	$(CXX) $(C11) $< -o $@
+
+bfgs3D: src/bfgs3D.cpp
 	$(CXX) $(C11) $< -o $@
 
 generator: src/generator.cpp
@@ -20,7 +23,7 @@ generator3D: src/generator3D.cpp
 
 .PHONY: clean
 clean:
-	rm -fr cauchy cauchy3D newton generador generator generator3D 
+	rm -fr cauchy cauchy3D bfgs bfgs3D generador generator generator3D 
 
 cleanData:
 	rm -fr *.txt
