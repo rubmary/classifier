@@ -127,7 +127,6 @@ int main() {
 	vector  w0(4, 0);
 	
 	srand(time(NULL));
-	
 	int k;
 	clock_t t1, t2;
 	double ro = 0.5;
@@ -142,7 +141,6 @@ int main() {
 
 	vector w = cauchy -> x;
 	std::vector<int> r = results(w, X, D);
-
 	make_graphics(w, X, D);
 	std::cout << "Valor de rho: " << ro << std::endl;
 	std::cout << "Total de llamadas a: "<< std::endl;

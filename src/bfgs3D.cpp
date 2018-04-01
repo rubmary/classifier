@@ -138,15 +138,12 @@ int main() {
 	bfgs -> MAX_IT = 10000;
 	bfgs -> f = f;
 
-	
 	t1 = clock();
 	k = bfgs -> linear_search(w0);
 	t2 = clock();
-
 	vector w = bfgs -> x;
 	std::vector<int> r = results(w, X, D);
 	make_graphics(w, X, D);
-
 	std::cout << "Valor de rho: " << ro << std::endl;
 	std::cout << "Total de llamadas a: "<< std::endl;
 	std::cout << "\tFuncion:   " << f -> total << std::endl;
