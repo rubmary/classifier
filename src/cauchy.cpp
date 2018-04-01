@@ -40,8 +40,19 @@ void make_graphics(vector w, matrix X, vector D){
 	double C = w[0], B = w[2], A = w[1];
 	std::ofstream line("line.txt"), c1("c1.txt"), c2("c2.txt");
 	int N = X.size();
-	for (int i = 0; i < N; i++)
-		line << X[i][1] << ' ' << -(C + A*X[i][1])/B << std::endl;
+	double minY = 1e100, maxY = 1e-100;
+	for (int i = 0; i < N; i++){
+		minY = std::min(minY, X[i][2]);
+		maxY = std::max(maxY, X[i][2]);
+	}
+	minY -= 0.1;
+	maxY += 0.1;
+
+	for (int i = 0; i < N; i++){
+		double x0 = X[i][1], y0 = -(C + A*X[i][1])/B;
+		if (minY <= y0 && y0 <= maxY)
+			line << x0 << ' ' << y0 << std::endl;
+	}
 	for (int i = 0; i < N; i++) {
 		if(D[i] == 1)
 			c1 << X[i][1] << ' ' << X[i][2] << std::endl;
