@@ -194,6 +194,7 @@ public:
 
     int linear_search(vector x0)
     {
+        int n=Hk.size();
         Hk_inv=Hk;
         vector d;
         x = x0;
@@ -209,7 +210,7 @@ public:
             x = x + alpha(d)*d;
             s = x - x_prev;
             y = (f->d(x)) - gx;
-            Hk_inv= ((identity(3) - ((1/(y*s))*producto_vectores(s,y)))*Hk_inv*(identity(3) - ((1/(y*s))*producto_vectores(y,s)))) + ((1/(y*s))*producto_vectores(s,s));
+            Hk_inv= ((identity(n) - ((1/(y*s))*producto_vectores(s,y)))*Hk_inv*(identity(n) - ((1/(y*s))*producto_vectores(y,s)))) + ((1/(y*s))*producto_vectores(s,s));
         }
         return k-1;
     }
