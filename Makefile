@@ -21,9 +21,16 @@ generator: src/generator.cpp
 generator3D: src/generator3D.cpp
 	$(CXX) $(C11) $< -o $@
 
+generator_clouds: src/generator_clouds.cpp
+	$(CXX) $(C11) $< -o $@
+
+generator_clouds3D: src/generator_clouds3D.cpp
+	$(CXX) $(C11) $< -o $@
+
+
 .PHONY: clean
 clean:
-	rm -fr cauchy cauchy3D bfgs bfgs3D generador generator generator3D 
+	rm -fr cauchy cauchy3D bfgs bfgs3D generador generator generator3D generator_clouds generator_clouds3D
 
 cleanData:
 	rm -fr *.txt
