@@ -176,3 +176,42 @@ class Newton : public LinearSearch
         return -1*(H*gx);
     }
 };
+
+class Bfgs : public Cauchy
+{
+public:
+    matrix Hk, Hk_inv;
+    vector x_prev, s, y;
+
+    Bfgs(double al0, double gamma, double ro, matrix H, double sig = 1) :
+        Cauchy(al0, gamma, ro, sig) {
+            Hk=H;
+    }
+
+    virtual vector dir(){
+        return (-1*Hk_inv)*gx;
+    }
+
+    int linear_search(vector x0)
+    {
+        Hk_inv=Hk;
+        vector d;
+        x = x0;
+        int k = 0;
+        while (true) {
+            k++;
+            fx = f -> val(x);
+            gx = f -> d(x);
+            if (abs(gx) < eps || k > MAX_IT)
+                break;
+            d = dir();
+            x_prev = x;
+            x = x + alpha(d)*d;
+            s = x - x_prev;
+            y = (f->d(x)) - gx;
+            Hk_inv= ((identity(3) - ((1/(y*s))*producto_vectores(s,y)))*Hk_inv*(identity(3) - ((1/(y*s))*producto_vectores(y,s)))) + ((1/(y*s))*producto_vectores(s,s));
+        }
+        return k-1;
+    }
+
+};
