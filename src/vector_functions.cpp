@@ -16,7 +16,7 @@ matrix cross(vector A, vector B)
 	}
 	return C;
 }
-matrix operator + (matrix &A, matrix &B)
+matrix operator + (matrix A, matrix B)
 {
 	int n = A.size(), m = A[0].size();
 	matrix C(n, vector(m));
@@ -27,7 +27,7 @@ matrix operator + (matrix &A, matrix &B)
 	}
 	return C;
 }
-vector operator * (matrix &A, vector &B)
+vector operator * (matrix A, vector B)
 {
 	int n = A.size(), m = B.size();
 	vector C(n, 0);
@@ -96,3 +96,46 @@ matrix t(matrix A) {
 	return B;
 }
 double abs(vector &x) { return std::sqrt(x*x); }
+
+matrix operator - (matrix A, matrix B)
+{
+	int n = A.size(), m = A[0].size();
+	matrix C(n, vector(m));
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+			C[i][j] = A[i][j] - B[i][j];
+	}
+	return C;
+}
+matrix operator * (double eta, matrix A)
+{
+	int n = A.size(), m = A[0].size();
+	matrix B(m, vector(n));
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < m; j++)
+			B[j][i] = A[j][i]*eta;
+	return B;
+}
+matrix identity(int n)
+{
+	matrix id(n, vector(n));
+	for (int i=0; i<n; i++){
+		for (int j=0; j<n; j++){
+			if (i==j) id[i][j]=1;
+			else  id[i][j]=0;
+		}
+	}
+	return id;
+}
+matrix producto_vectores(vector A, vector B)
+{
+	int n = A.size();
+	matrix C(n,vector(n));
+	for (int i=0; i<n; i++){
+		for (int j=0; j<n; j++){
+			C[i][j]=A[i]*B[j];
+		}
+	}
+	return C;
+}
