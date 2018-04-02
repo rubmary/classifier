@@ -116,12 +116,7 @@ int main() {
 	cauchy -> MAX_IT = 1000000;
 	std::cout << "Valor_de_rho rho_f_objetivo #llamadas_f_objetivo #llamadas_gradiente Norma_del_gradiente ";
 	std::cout << "#iteraciones Datos_bien_clasificados Datos_mal_clasificados Precisión Tiempo_de_cómputo\n";
-	//std::cout << "No entiendo que pasa";
-	//double rho_fo=0.1;
-	//std::cout<< "Antes de entrar";
-	//double i=0.1;
 	for (double i=0.1; i<=1; i=i+0.1){
-		//std::cout<<"entre";
 		ET *f = new ET(3, X, D, i);
 		cauchy -> f = f;
 			
@@ -137,23 +132,4 @@ int main() {
 		std::cout << std::endl;
 		delete f;
 	}
-
-	/*i=0.2;
-	//for (double i=0.1; i<0.9; i=i+0.1){
-		//std::cout<<"entre";
-	ET *g = new ET(3, X, D, i);
-	cauchy -> f = g;
-		
-	t1 = clock();
-	k = cauchy -> linear_search(w0);
-	t2 = clock();
-
-	w = cauchy -> x;
-	r = results(w, X, D);
-	make_graphics(w, X, D);
-	std::cout << ro << " " << i << " " << f->total << " " << f-> total_d << " " << std::abs(cauchy -> gx) << " ";
-	std::cout << k << " " << r[0] << " " << r[1] << " " << 100.00*r[0]/(r[0]+r[1]) << "%" << " " << (double) (t2 - t1)/CLOCKS_PER_SEC;
-	std::cout << std::endl;*/
-		//rho_fo+=0.1;
-	//}
 }
