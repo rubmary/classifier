@@ -104,7 +104,7 @@ int main() {
 	vector D;
 	make_data(X, D);
 
-	ET *f = new ET(3, X, D, 0.5);
+	//ET *f = new ET(3, X, D, 0.5);
 	vector  w0(3, 0);
 	srand(time(NULL));
 
@@ -113,28 +113,47 @@ int main() {
 	double ro = 0.3;
 	Cauchy *cauchy = new Cauchy(10, 1e-4, ro);
 	cauchy -> eps = EPS;
-	cauchy -> MAX_IT = 100000;
-	cauchy -> f = f;
-	
+	cauchy -> MAX_IT = 1000000;
+	std::cout << "Valor_de_rho rho_f_objetivo #llamadas_f_objetivo #llamadas_gradiente Norma_del_gradiente ";
+	std::cout << "#iteraciones Datos_bien_clasificados Datos_mal_clasificados Precisión Tiempo_de_cómputo\n";
+	//std::cout << "No entiendo que pasa";
+	//double rho_fo=0.1;
+	//std::cout<< "Antes de entrar";
+	//double i=0.1;
+	for (double i=0.1; i<=1; i=i+0.1){
+		//std::cout<<"entre";
+		ET *f = new ET(3, X, D, i);
+		cauchy -> f = f;
+			
+		t1 = clock();
+		k = cauchy -> linear_search(w0);
+		t2 = clock();
+
+		vector w = cauchy -> x;
+		std::vector<int> r = results(w, X, D);
+		make_graphics(w, X, D);
+		std::cout << ro << " " << i << " " << f->total << " " << f-> total_d << " " << std::abs(cauchy -> gx) << " ";
+		std::cout << k << " " << r[0] << " " << r[1] << " " << 100.00*r[0]/(r[0]+r[1]) << "%" << " " << (double) (t2 - t1)/CLOCKS_PER_SEC;
+		std::cout << std::endl;
+		delete f;
+	}
+
+	/*i=0.2;
+	//for (double i=0.1; i<0.9; i=i+0.1){
+		//std::cout<<"entre";
+	ET *g = new ET(3, X, D, i);
+	cauchy -> f = g;
+		
 	t1 = clock();
 	k = cauchy -> linear_search(w0);
 	t2 = clock();
 
-	vector w = cauchy -> x;
-	std::vector<int> r = results(w, X, D);
+	w = cauchy -> x;
+	r = results(w, X, D);
 	make_graphics(w, X, D);
-
-	std::cout << "Valor de rho: " << ro << std::endl;
-	std::cout << "Total de llamadas a: "<< std::endl;
-	std::cout << "\tFuncion:   " << f -> total << std::endl;
-	std::cout << "\tDerivadas: " << f -> total_d << std::endl;
-	std::cout << "\tHessiano:  " << f -> total_h << std::endl;
-	std::cout << "\tInversa:   " << f -> total_i << std::endl;
-	std::cout << "Norma del gradiente:  " << std::abs(cauchy -> gx) << std::endl;
-	std::cout << "Total de iteraciones: " << k << std::endl;
-	std::cout << "Resultados: " << std::endl;
-	std::cout << "\tDatos bien clasificados: " << r[0] << std::endl;
-	std::cout << "\tDatos mal  clasificados: " << r[1] << std::endl;
-	std::cout << "\tPrecision:               " << 100.00*r[0]/(r[0]+r[1]) << "%" << std::endl;
-	std::cout << "Tiempo utilizado: " << (double) (t2 - t1)/CLOCKS_PER_SEC << std::endl;
+	std::cout << ro << " " << i << " " << f->total << " " << f-> total_d << " " << std::abs(cauchy -> gx) << " ";
+	std::cout << k << " " << r[0] << " " << r[1] << " " << 100.00*r[0]/(r[0]+r[1]) << "%" << " " << (double) (t2 - t1)/CLOCKS_PER_SEC;
+	std::cout << std::endl;*/
+		//rho_fo+=0.1;
+	//}
 }
