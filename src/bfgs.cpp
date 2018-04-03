@@ -7,7 +7,6 @@
 #include <algorithm>
 #define EPS 1e-3
 
-
 void make_data(matrix &X, vector &D){
 	vector x(3, 1);
 	int M;
@@ -17,7 +16,6 @@ void make_data(matrix &X, vector &D){
 		std::cin >> x[1] >> x[2] >> D[i];
 		X.push_back(x);
 	}
-
 	double miuX = 0, varX = 0, miuY = 0, varY = 0;
 	for (int i = 0; i < M; i++) {
 		miuX += X[i][1];
@@ -36,7 +34,6 @@ void make_data(matrix &X, vector &D){
 		X[i][2] = (X[i][2] - miuY)/varY;
 	}
 }
-
 void make_graphics(vector w, matrix X, vector D){
 	double C = w[0], B = w[2], A = w[1];
 	std::ofstream line("line.txt"), c1("c1.txt"), c2("c2.txt");
@@ -54,7 +51,6 @@ void make_graphics(vector w, matrix X, vector D){
 	maxY += 0.05;
 	minY -= 0.05;
 	maxY += 0.05;
-
 	if (std::abs(A) > EPS){
 		B /= A;
 		C /= A;
@@ -72,7 +68,6 @@ void make_graphics(vector w, matrix X, vector D){
 				line << x0 << ' ' << y0 << std::endl;
 		}
 	}
-
 	for (int i = 0; i < N; i++) {
 		if(D[i] == 1)
 			c1 << X[i][1] << ' ' << X[i][2] << std::endl;
@@ -80,7 +75,6 @@ void make_graphics(vector w, matrix X, vector D){
 			c2 << X[i][1] << ' ' << X[i][2] << std::endl;
 	}
 }
-
 std::vector <int> results(vector w, matrix X, vector D) {
 	int correct = 0, wrong = 0;
 	int M = X.size();
@@ -121,26 +115,21 @@ int main() {
 	srand(time(NULL));
 	for (int i = 0; i < w0.size(); i++)
 		w0[i] = get_rand(-1, 1);
-
 	int k;
 	clock_t t1, t2;
 	double ro = 0.3;
 
 	I=identity(3);
-
 	Bfgs *bfgs = new Bfgs(10, 1e-4, ro, I); 
 	bfgs -> eps=EPS;
 	bfgs -> MAX_IT = 10000;
 	bfgs -> f = f;
-
 	t1 = clock();
 	k = bfgs -> linear_search(w0);
 	t2 = clock();
-
 	vector w = bfgs -> x;
 	std::vector<int> r = results(w, X, D);
 	make_graphics(w, X, D);
-
 	std::cout << "Valor de rho: " << ro << std::endl;
 	std::cout << "Total de llamadas a: "<< std::endl;
 	std::cout << "\tFuncion:   " << f -> total << std::endl;

@@ -18,7 +18,6 @@ public:
     int total_d;
     int total_h;
     int total_i;
-
     /**
      * val - valor de la funcion evualuada en un punto
      * Parametros:
@@ -43,7 +42,6 @@ public:
     virtual vector d(vector x) {
         return vector(0);
     }
-
     /**
      * h - hessiano
      * Parametros:
@@ -54,7 +52,6 @@ public:
     virtual matrix h(vector x) {
         return matrix(0);
     }
-
     /**
      * inverse - inversa
      * Parametros:
@@ -67,7 +64,6 @@ public:
         return matrix(0);
     }
 };
-
 
 class ET : public Function{
 public:    
@@ -83,21 +79,17 @@ public:
         y = vector(M);
         PHI = vector(M);
     }
-    
     double phi(double x) {
         x *= rho;
         return (exp(x) - exp(-x))/(exp(x) + exp(-x));
     }
-
     double dphi(double x) {
         x *= rho;
         return rho*sq(2/(exp(x) + exp(-x)));
     }
-
     double ddphi(double x) {
         return -2*rho*phi(x)*dphi(x);
     }
-
     void precalculations(vector w) {
         V = X*w;
         for (int k = 0; k < M; k++)
@@ -105,7 +97,6 @@ public:
         for (int k = 0; k < M; k++)
             PHI[k] = (y[k] - D[k])*dphi(V[k]);       
     }
-
     virtual double val(vector w) {
         total++;
         precalculations(w);
@@ -114,13 +105,11 @@ public:
             e += sq(y[k]-D[k]);
         return e/2;
     }
-    
     virtual vector d(vector w) {
         total_d++;
         matrix Xt = t(X);
         return Xt*PHI;
     }
-
     virtual matrix h(vector w) {
         total_h++;
         matrix H(N, vector(N));
@@ -134,7 +123,6 @@ public:
         }
         return H;
     }
-
     double det_adj(int i, int j, matrix &M) {
         matrix A(2, vector(2));
         int i2 = 0, j2 = 0;
@@ -150,14 +138,12 @@ public:
         }
         return A[0][0]*A[1][1]-A[1][0]*A[0][1];
     }
-
     virtual matrix inverse(matrix &M) {
         total_i++;
         matrix X = matrix(N, vector(N));
         double det =    M[0][0]*(M[1][1]*M[2][2] - M[1][2]*M[2][1])
                       - M[0][1]*(M[1][0]*M[2][2] - M[1][2]*M[2][0])
                       + M[0][2]*(M[1][0]*M[2][1] - M[1][1]*M[2][0]);
-
         matrix Mt = t(M);
         for (int i = 0; i < N; i++){
             for (int j = 0; j < N; j++){

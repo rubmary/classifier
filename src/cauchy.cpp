@@ -7,7 +7,6 @@
 #include <algorithm>
 #define EPS 1e-3
 
-
 void make_data(matrix &X, vector &D){
 	vector x(3, 1);
 	int M;
@@ -17,7 +16,6 @@ void make_data(matrix &X, vector &D){
 		std::cin >> x[1] >> x[2] >> D[i];
 		X.push_back(x);
 	}
-
 	double miuX = 0, varX = 0, miuY = 0, varY = 0;
 	for (int i = 0; i < M; i++) {
 		miuX += X[i][1];
@@ -36,7 +34,6 @@ void make_data(matrix &X, vector &D){
 		X[i][2] = (X[i][2] - miuY)/varY;
 	}
 }
-
 void make_graphics(vector w, matrix X, vector D){
 	double C = w[0], B = w[2], A = w[1];
 	std::ofstream line("line.txt"), c1("c1.txt"), c2("c2.txt");
@@ -49,18 +46,15 @@ void make_graphics(vector w, matrix X, vector D){
 		minY = std::min(minY, X[i][2]);
 		maxY = std::max(maxY, X[i][2]);
 	}
-
 	minX -= 0.05;
 	maxY += 0.05;
 	minY -= 0.05;
 	maxY += 0.05;
-
 	if (std::abs(A) > EPS){
 		B /= A;
 		C /= A;
 		A = 1;
 	}
-
 	if (std::abs(B) < EPS) {
 		line << -C/A << ' ' << minY << std::endl;
 		line << -C/A << ' ' << maxY << std::endl;
@@ -72,7 +66,6 @@ void make_graphics(vector w, matrix X, vector D){
 				line << x0 << ' ' << y0 << std::endl;
 		}
 	}
-
 	for (int i = 0; i < N; i++) {
 		if(D[i] == 1)
 			c1 << X[i][1] << ' ' << X[i][2] << std::endl;
@@ -80,7 +73,6 @@ void make_graphics(vector w, matrix X, vector D){
 			c2 << X[i][1] << ' ' << X[i][2] << std::endl;
 	}
 }
-
 std::vector <int> results(vector w, matrix X, vector D) {
 	int correct = 0, wrong = 0;
 	int M = X.size();
@@ -103,11 +95,9 @@ int main() {
 	matrix X;
 	vector D;
 	make_data(X, D);
-
 	//ET *f = new ET(3, X, D, 0.5);
 	vector  w0(3, 0);
 	srand(time(NULL));
-
 	int k;
 	clock_t t1, t2;
 	double ro = 0.3;
@@ -115,15 +105,13 @@ int main() {
 	cauchy -> eps = EPS;
 	cauchy -> MAX_IT = 1000000;
 	std::cout << "Valor_de_rho rho_f_objetivo #llamadas_f_objetivo #llamadas_gradiente Norma_del_gradiente ";
-	std::cout << "#iteraciones Datos_bien_clasificados Datos_mal_clasificados Precisión Tiempo_de_cómputo\n";
+	std::cout << "#iteraciones Datos_bien_clasificados Datos_mal_clasificados Precisión Tiempo_de_computo\n";
 	for (double i=0.1; i<=1; i=i+0.1){
 		ET *f = new ET(3, X, D, i);
-		cauchy -> f = f;
-			
+		cauchy -> f = f;	
 		t1 = clock();
 		k = cauchy -> linear_search(w0);
 		t2 = clock();
-
 		vector w = cauchy -> x;
 		std::vector<int> r = results(w, X, D);
 		make_graphics(w, X, D);

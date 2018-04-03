@@ -18,11 +18,9 @@ void make_data(matrix &X, vector &D){
 		std::cin >> D[i];
 		X.push_back(x);
 	}
-
 	double miuX = 0, varX = 0;
 	double miuY = 0, varY = 0;
 	double miuZ = 0, varZ = 0;
-
 	for (int i = 0; i < M; i++) {
 		miuX += X[i][1];
 		miuY += X[i][2];
@@ -31,13 +29,11 @@ void make_data(matrix &X, vector &D){
 	miuX /= M;
 	miuY /= M;
 	miuZ /=M;
-
 	for (int i = 0; i < M; i++) {
 		varX += sq(X[i][1] - miuX);
 		varY += sq(X[i][2] - miuY);
 		varZ += sq(X[i][3] - miuZ);
 	}
-
 	varX /= (M-1);
 	varY /= (M-1);
 	varZ /= (M-1);
@@ -82,7 +78,6 @@ void make_graphics(vector w, matrix X, vector D){
 				plane << x0 << ' ' << y0 << ' ' << z0 << std::endl;
 		}
 	}
-
 	for (int j = 1; j <= total; j++) {
 		for (int i = 1; i <= total; i++) {
 			double x0 = i*(maxX - minX)/total + minX;
@@ -92,7 +87,6 @@ void make_graphics(vector w, matrix X, vector D){
 				plane << x0 << ' ' << y0 << ' ' << z0 << std::endl;
 		}
 	}
-
 	for (int i = 0; i < N; i++) {
 		if(D[i] == 1)
 			c1 << X[i][1] << ' ' << X[i][2] << ' ' << X[i][3] << std::endl;
@@ -122,10 +116,8 @@ int main() {
 	matrix X;
 	vector D;
 	make_data(X, D);
-
 	ET *f = new ET(4, X, D, 0.5);
 	vector  w0(4, 0);
-	
 	srand(time(NULL));
 	int k;
 	clock_t t1, t2;
@@ -134,11 +126,9 @@ int main() {
 	cauchy -> eps = EPS;
 	cauchy -> MAX_IT = 100000;
 	cauchy -> f = f;
-	
 	t1 = clock();
 	k = cauchy -> linear_search(w0);
 	t2 = clock();
-
 	vector w = cauchy -> x;
 	std::vector<int> r = results(w, X, D);
 	make_graphics(w, X, D);

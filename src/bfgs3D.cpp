@@ -18,11 +18,9 @@ void make_data(matrix &X, vector &D){
 		std::cin >> D[i];
 		X.push_back(x);
 	}
-
 	double miuX = 0, varX = 0;
 	double miuY = 0, varY = 0;
 	double miuZ = 0, varZ = 0;
-
 	for (int i = 0; i < M; i++) {
 		miuX += X[i][1];
 		miuY += X[i][2];
@@ -31,31 +29,25 @@ void make_data(matrix &X, vector &D){
 	miuX /= M;
 	miuY /= M;
 	miuZ /=M;
-
 	for (int i = 0; i < M; i++) {
 		varX += sq(X[i][1] - miuX);
 		varY += sq(X[i][2] - miuY);
 		varZ += sq(X[i][3] - miuZ);
 	}
-
 	varX /= (M-1);
 	varY /= (M-1);
 	varZ /= (M-1);
-
 	for (int i = 0; i < M; i++) {
 		X[i][1] = (X[i][1] - miuX)/varX;
 		X[i][2] = (X[i][2] - miuY)/varY;
 		X[i][3] = (X[i][3] - miuZ)/varZ;
 	}
 }
-
 void make_graphics(vector w, matrix X, vector D){
 	double D1 = w[0], A = w[1], B = w[2], C = w[3];
 	std::ofstream plane("plane.txt"), c1("c1.txt"), c2("c2.txt");
 	int N = X.size();
-	
 	double minX = 1e100, maxX = -1e100, minY = 1e100, maxY = 1e-100, minZ = 1e100, maxZ = 1e-100;
-
 	for (int i = 0; i < N; i++){
 		minX = std::min(minX, X[i][1]);
 		maxX = std::max(maxX, X[i][1]);
@@ -64,7 +56,6 @@ void make_graphics(vector w, matrix X, vector D){
 		minZ = std::min(minZ, X[i][3]);
 		maxZ = std::max(maxZ, X[i][3]);
 	}
-
 	minX -= 0.1;
 	minY -= 0.1;
 	minZ -= 0.1;
@@ -122,22 +113,17 @@ int main() {
 	matrix X, I;
 	vector D;
 	make_data(X, D);
-
 	ET *f = new ET(4, X, D, 0.5);
 	vector  w0(4, 0);
 	srand(time(NULL));
-	
 	int k;
 	clock_t t1, t2;
 	double ro = 0.5;
-
 	I=identity(4);
-
 	Bfgs *bfgs = new Bfgs(10, 1e-4, ro, I); 
 	bfgs -> eps=EPS;
 	bfgs -> MAX_IT = 10000;
 	bfgs -> f = f;
-
 	t1 = clock();
 	k = bfgs -> linear_search(w0);
 	t2 = clock();
